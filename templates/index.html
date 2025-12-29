@@ -31,6 +31,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Birthday</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,6 +40,12 @@
                             <tr>
                                 <td>{{ birthday.name }}</td>
                                 <td>{{ birthday.month }}/{{ birthday.day }}</td>
+                                <td>
+                                    <form action="/delete" method="POST" style="display: inline;">
+                                        <input type="hidden" name="id" value="{{ birthday.id }}">
+                                        <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this birthday?');">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
                          {% endfor %}
                     </tbody>

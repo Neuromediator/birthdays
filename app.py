@@ -62,3 +62,28 @@ def index():
         return render_template("index.html", birthdays=birthdays)
 
 
+@app.route("/delete", methods=["GET", "POST"])
+def delete():
+    """Delete a birthday entry from the database"""
+    # Support both GET and POST methods
+    if request.method == "POST":
+        id = request.form.get("id")
+    else:
+        id = request.args.get("id")
+    
+    if not id:
+        return render_template("error.html", message="ID is required")
+    
+    try:
+        id = int(id)
+    except ValueError:
+        return render_template("error.html", message="Invalid ID format")
+    
+    # Check if entry exists before deleting
+    entry = db.execute("SELECT * FROM birthdays WHERE id = ?", id)
+    if not entry:
+        return render_template("error.html", message="Entry not found")
+    
+    db.execute("DELETE FROM birthdays WHERE id = ?", id)
+    
+    return redirect("/")
